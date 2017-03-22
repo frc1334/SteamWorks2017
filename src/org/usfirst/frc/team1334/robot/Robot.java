@@ -37,6 +37,7 @@ public class Robot extends IterativeRobot
     public static OI oi;
     public static double x;
 	public static double x2;
+	public static double Distance;
     BTMacroPlay player = null;
     BTMacroRecord recorder = null;
     boolean isRecording = false;
@@ -93,6 +94,9 @@ public class Robot extends IterativeRobot
      */
     public void autonomousPeriodic()
     {
+    	FOV = 640;
+    	x = Pitable.getNumber("x", FOV/2);
+    	x2 =Pitable.getNumber("x2", FOV/2);
 		if (player != null)
 		{
 			player.play();
@@ -127,16 +131,20 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopPeriodic()
     {
-    	SmartDashboard.putNumber("PID", driveSubsystem.getPIDController().get());
+    	SmartDashboard.putNumber("OUTPUT", driveSubsystem.getPIDController().get());
     	SmartDashboard.putNumber("ERROR", driveSubsystem.getPIDController().getAvgError());
     	SmartDashboard.putData("DriveSubsystem", driveSubsystem.getPIDController());
+    	 // PID GRAPH
+    	SmartDashboard.putNumber("SETPOINT",driveSubsystem.getPIDController().getSetpoint());
+    	SmartDashboard.putNumber("CURRENT YAW",driveSubsystem.ahrs.pidGet());
+    	
     	FOV = 640;
-    	x = Pitable.getNumber("X", FOV/2);
-    	x2 =Pitable.getNumber("X2", FOV/2);
+    	x = Pitable.getNumber("x", FOV/2);
+    	x2 =Pitable.getNumber("x2", FOV/2);
     	boolean afterrecord = false;
         Scheduler.getInstance().run();
-        OI.Driver.toggleBank.put("RBC", OI.Driver.boolfalsetotruelistener(OI.DgetRB(),OI.Driver.toggleBank.get("RBP")));
-        OI.Driver.toggleBank.put("RBP", OI.DgetRB());
+        OI.Driver.toggleBank.put("RBC", OI.Driver.boolfalsetotruelistener(OI.DToggleRecord(),OI.Driver.toggleBank.get("RBP")));
+        OI.Driver.toggleBank.put("RBP", OI.DToggleRecord());
         if (OI.Driver.toggleBank.get("RBC"))
 		{
 			isRecording = !isRecording;
@@ -169,10 +177,16 @@ public class Robot extends IterativeRobot
 		}
 
     }
-
+    @Override
+    public void testInit(){
+    	driveCommand.start();
+    }
     @Override
     public void testPeriodic()
     {
+    	Scheduler.getInstance().run();
         LiveWindow.run();
     }
+    
+   
 }

@@ -27,7 +27,8 @@ public class BTMacroPlay {
 	boolean onTime = true;
 	double nextDouble;
 	double turn, speed;
-	boolean A,B,gear1,gear2;
+	
+	boolean A,B,gear1,gear2,LB;
 	
 	
 	public BTMacroPlay() throws FileNotFoundException
@@ -72,28 +73,35 @@ public class BTMacroPlay {
 			if (t_delta <= 0)
 			{
 		    	
-				//for 2015 robot. these are all the motors available to manipulate during autonomous.
+				//these are all the motors/pistons etc available to manipulate during autonomous.
 				//it is extremely important to set the motors in the SAME ORDER as was recorded in BTMacroRecord
 				//otherwise, motor values will be sent to the wrong motors and the robot will be unpredicatable
 				//storage.robot.getFrontLeftMotor().setX(scanner.nextDouble());
+				
 				turn = scanner.nextDouble();
 				speed = scanner.nextDouble();
-				Robot.driveSubsystem.PIDdrive(turn, speed);
+				LB = scanner.nextBoolean();
+				//Robot.driveSubsystem.PIDdrive(turn, speed);
 				
-		    	//Robot.driveSubsystem.setSetpoint(Robot.driveSubsystem.GyroDrive(turn));
-		    	//Robot.driveSubsystem.speed = speed;
-				//if(Math.abs(Robot.driveSubsystem.getPIDController().getError())<=Robot.driveSubsystem.kToleranceDegrees){
-		    	//	Robot.driveSubsystem.usePIDOutput(0);
-		    	//}else{
-		    	//	Robot.driveSubsystem.usePIDOutput(Robot.driveSubsystem.getPIDController().get());
-		    	//}
-				//Robot.driveSubsystem.arcadeDrive(Robot.driveSubsystem.rotateToAngleRate, Robot.driveSubsystem.speed);
-				//gear1 = scanner.nextBoolean();
-				//gear2 = scanner.nextBoolean();
-				//Robot.driveSubsystem.gearPiston(gear1, gear2);				
-				//A = scanner.nextBoolean();
-				//B = scanner.nextBoolean();
-				//DriveSubsystem.shiftGear(A, B);
+				
+				/*
+				 *playback using only gyro
+				 */
+				
+		    	Robot.driveSubsystem.setSetpoint(Robot.driveSubsystem.GyroDrive(turn));
+		    	Robot.driveSubsystem.speed = speed;
+				if(LB){
+					Robot.driveSubsystem.VisionDrive(Robot.x, Robot.x2);
+				}
+		    	
+		    	Robot.driveSubsystem.usePIDOutput(Robot.driveSubsystem.getPIDController().get());
+		    	
+				Robot.driveSubsystem.arcadeDrive(Robot.driveSubsystem.rotateToAngleRate, Robot.driveSubsystem.speed);
+				gear1 = scanner.nextBoolean();
+				Robot.driveSubsystem.gearPiston(gear1);				
+				A = scanner.nextBoolean();
+				B = scanner.nextBoolean();
+				DriveSubsystem.shiftGear(A, B);
 				
 				
 				

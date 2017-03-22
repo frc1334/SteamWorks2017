@@ -17,12 +17,12 @@ public class RobotMap {
     // public static int rangefinderModule = 1;
    
 	//DRIVESUBSYSTEM
-    public static final int left1   = 1;
-    public static final int left2   = 2;
-    public static final int right1  = 3;
-    public static final int right2  = 4;    
-    public static final int campan = 0;
-    public static final int camtilt = 1;    
+    public static final int left1   = 0;
+    public static final int left2   = 1;
+    public static final int right1  = 2;
+    public static final int right2  = 3;    
+    public static final int campan = 5;
+    public static final int camtilt = 6;    
     public static final int shiftup = 0;
     public static final int shiftdown = 1;
     public static final int climber1 = 2;
@@ -43,12 +43,17 @@ public class RobotMap {
      * A:SHIFT INTO HIGH GEAR
      * B:SHIFT INTO LOW GEAR
      * X:ENABLE/DISABLE TOGGLE FOR GYRO PID
-     * TBD: ENABLE/DISABLE TOGGLE FOR GEAR VISION TRACKING(NOT IMPLEMENTED)
-     * RIGHT BUMPER: ENABLE/DISABLE TOGGLE FOR AUTONOMOUS RECORDING(NOT IMPLEMENTED)
+     * LEFT BUMPER: ENABLE/DISABLE TOGGLE FOR GEAR VISION TRACKING
+     * RIGHT BUMPER: ENABLE/DISABLE TOGGLE FOR AUTONOMOUS RECORDING
+     * RIGHT STICK CLICK: ULTRASONIC RANGE FINDER REQUIRED DISTANCE RECORDING
      * 					-------OPERATOR CONTROLLER--------
      * A: RUN LOW GOAL DUMP(I DID NOT COMBINE A AND B YET BECAUSE I WANTED TO CONSULT THE DRIVERS)
      * B: RUN INTAKE
      * X: CLIMBER CLIMB UP
      * Y: CLIMBER CLIMB DOWN
+     * RIGHT BUMPER: TOGGLE GEAR PISTONS
+     * LEFT BUMPER: TOGGLE CLIMBER PISTON
+     * LEFT JOYSTICK X AXIS: DRIVER CAMERA PAN
+     * LEFT JOYSTICK Y AXIS: DRIVER CAMERA TILT
     */
 }

@@ -12,30 +12,28 @@ import Util.Xbox360Controller;
 public class OI {
     public static Xbox360Controller Driver = new Xbox360Controller(0,0.15);
     public static Xbox360Controller Operator = new Xbox360Controller(1,0.15);
-    /*NetworkTable visionResultTable;
-    public void tableInit(){
-    	visiontResultTable = NetworkTable.getTable("PiProcessed");
-    }*/
-
     
-
-    
+    //Driver Controls
     public static double DgetSpeed() {return Driver.getRightTrigger() - Driver.getLeftTrigger();}
     public static double DgetTurn() {return Driver.getLeftXAxis();}
-    public static boolean DgetA() {return Driver.getButtonA();}
-    public static boolean DgetB() {return Driver.getButtonB();}
+    public static boolean DLowGear() {return Driver.getButtonA();}
+    public static boolean DHighGear() {return Driver.getButtonB();}
     public static boolean DgetY() {return Driver.getButtonY();}
-    public static boolean DgetX() {return Driver.getButtonX();}
-    public static boolean DgetRB() {return Driver.getButtonRB();}
-    public static boolean DgetLB() {return Driver.getButtonLB();}
-    public static boolean OgetA() {return Operator.getButtonA();}
-    public static boolean OgetB() {return Operator.getButtonB();}
-    public static boolean OgetX() {return Operator.getButtonX();}
-    public static boolean OgetY() {return Operator.getButtonY();}
-    public static boolean OgetRB(){return Operator.getButtonRB();}
-    public static boolean OgetLB(){return Operator.getButtonLB();}
-    public static boolean OgetRC(){return Operator.getClickRightStick();}
-    public static boolean OgetLC(){return Operator.getClickLeftStick();}
+    public static boolean DEnableGyro() {return Driver.getButtonX();}
+    public static boolean DToggleRecord() {return Driver.getButtonRB();}
+    public static boolean DToggleVision() {return Driver.getButtonLB();}
+    public static boolean DRangeFinderRecord(){return Driver.getClickRightStick();}
+    
+    //Operator Controls
+    public static double OgetPan() {return Operator.getLeftXAxis();}
+    public static double OgetTilt() {return Operator.getLeftYAxis();}
+    public static boolean OIntake() {return Operator.getButtonA();}
+    public static boolean ODump() {return Operator.getButtonB();}
+    public static boolean OClimbUp() {return Operator.getButtonX();}
+    public static boolean OClimbDown() {return Operator.getButtonY();}
+    public static boolean OGearPistonToggle(){return Operator.getButtonRB();}
+    public static boolean OClimbGuidePistonToggle(){return Operator.getButtonLB();}
+    
 
 }
 

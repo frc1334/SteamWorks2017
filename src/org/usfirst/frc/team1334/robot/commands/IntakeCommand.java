@@ -24,8 +24,8 @@ public class IntakeCommand extends Command{
 
     @Override
     protected void execute() {
-    	Robot.intakeSubsystem.runIntakeDump(OI.OgetA());
-    	Robot.intakeSubsystem.runIntakePickup(OI.OgetB());
+    	Robot.intakeSubsystem.runIntakeDump(OI.ODump());
+    	Robot.intakeSubsystem.runIntakePickup(OI.OIntake());
     }
 
     @Override

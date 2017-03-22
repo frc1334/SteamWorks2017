@@ -48,11 +48,11 @@ public class BTMacroRecord {
 		//drive motors
 		// example append writer.append("," + storage.robot.getFrontLeftMotor().get());
 		writer.append("," + OI.DgetTurn());
-		writer.append("," + OI.DgetSpeed() + "\n");
-		//writer.append("," + OI.DgetLB());
-		//writer.append("," + OI.DgetRB());
-		//writer.append("," + OI.DgetA());
-		//writer.append("," + OI.DgetB() + "\n");
+		writer.append("," + OI.DgetSpeed());
+		writer.append("," + OI.DToggleVision());
+		writer.append("," + OI.OGearPistonToggle());
+		writer.append("," + OI.DLowGear());
+		writer.append("," + OI.DHighGear() + "\n");
 		/*
 		 * THE LAST ENTRY OF THINGS YOU RECORD NEEDS TO HAVE A DELIMITER CONCATENATED TO 
 		 * THE STRING AT THE END. OTHERWISE GIVES NOSUCHELEMENTEXCEPTION
