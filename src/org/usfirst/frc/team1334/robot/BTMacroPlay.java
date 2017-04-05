@@ -25,10 +25,11 @@ public class BTMacroPlay {
 	long startTime;
 	boolean firstTime = true;
 	boolean onTime = true;
+	boolean IsUS = false;
 	double nextDouble;
-	double turn, speed;
+	double turn, speed,Distance,error,robotUSOut;
 	
-	boolean A,B,gear1,gear2,LB;
+	boolean A,B,gear1,LB,USActive;
 	
 	
 	public BTMacroPlay() throws FileNotFoundException
@@ -80,25 +81,54 @@ public class BTMacroPlay {
 				
 				turn = scanner.nextDouble();
 				speed = scanner.nextDouble();
+				Distance = scanner.nextDouble();
+				error = Robot.Distance - Distance;
+				robotUSOut = error * 0.001;
+				System.out.println("US motor output" + robotUSOut);
+				System.out.println("Robot.distance" + Robot.Distance);
+				IsUS = scanner.nextBoolean();
 				LB = scanner.nextBoolean();
-				//Robot.driveSubsystem.PIDdrive(turn, speed);
+				
 				
 				
 				/*
-				 *playback using only gyro
+				 *playback using gyro and ultrasonic range finder
 				 */
 				
-		    	Robot.driveSubsystem.setSetpoint(Robot.driveSubsystem.GyroDrive(turn));
-		    	Robot.driveSubsystem.speed = speed;
+		    	
+		    	
 				if(LB){
 					Robot.driveSubsystem.VisionDrive(Robot.x, Robot.x2);
 				}
-		    	
+				Robot.driveSubsystem.setSetpoint(Robot.driveSubsystem.GyroDrive(turn));
 		    	Robot.driveSubsystem.usePIDOutput(Robot.driveSubsystem.getPIDController().get());
+		       
+		    	if(Robot.Distance<1000 && speed > 0 || robotUSOut > 0){
+		    		Robot.driveSubsystem.speed = Robot.driveSubsystem.minimalvoltage;
+			   	}else if(IsUS){
+		    		if(Math.abs(error)>20){
+			    		if(robotUSOut < Robot.driveSubsystem.minimalvoltage * 0.9 && robotUSOut > 0){
+			    		Robot.driveSubsystem.speed = Robot.driveSubsystem.minimalvoltage * 0.9;
+			    		}else if (robotUSOut > -Robot.driveSubsystem.minimalvoltage * 0.9 && robotUSOut < 0){
+			    		Robot.driveSubsystem.speed = -Robot.driveSubsystem.minimalvoltage * 0.9;
+			    		}else{
+			    		Robot.driveSubsystem.speed = robotUSOut;
+			    		}
+			    	}
+		    	}else{
+		    		Robot.driveSubsystem.speed = speed;
+		    	}
 		    	
 				Robot.driveSubsystem.arcadeDrive(Robot.driveSubsystem.rotateToAngleRate, Robot.driveSubsystem.speed);
+				
+				
 				gear1 = scanner.nextBoolean();
-				Robot.driveSubsystem.gearPiston(gear1);				
+				OI.Operator.toggleBank.put("RBC", OI.Operator.boolfalsetotruelistener(gear1,OI.Operator.toggleBank.get("RBP")));
+		        OI.Operator.toggleBank.put("RBP", gear1);
+		        if(OI.Operator.toggleBank.get("RBC")){
+		        	Robot.driveSubsystem.gearIn = !Robot.driveSubsystem.gearIn;
+		        }
+		        Robot.driveSubsystem.gearPiston(Robot.driveSubsystem.gearIn);
 				A = scanner.nextBoolean();
 				B = scanner.nextBoolean();
 				DriveSubsystem.shiftGear(A, B);

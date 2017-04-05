@@ -5,6 +5,8 @@ import org.usfirst.frc.team1334.robot.OI;
 import org.usfirst.frc.team1334.robot.Robot;
 import org.usfirst.frc.team1334.robot.subsystems.DriveSubsystem;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveCommand extends Command {
@@ -13,8 +15,8 @@ public class DriveCommand extends Command {
 	boolean DriveInit;
 	boolean PID = false;
 	double Start,End;
-	double USDistance = 20;
-	double RequiredDistance = 2000;
+	public double USDistance = 20;
+	double RequiredDistance = 3000;
     public DriveCommand(){
     	super("DriveCommand");
         requires(Robot.driveSubsystem);
@@ -23,18 +25,19 @@ public class DriveCommand extends Command {
 
     @Override
     protected void initialize() {
-		/*DriveSubsystem.left1.setControlMode(0);
-        DriveSubsystem.left2.setControlMode(0);
-        DriveSubsystem.right1.setControlMode(0);
-        DriveSubsystem.right2.setControlMode(0);*/
+		//DriveSubsystem.left1.setControlMode(0);
+        //DriveSubsystem.left2.setControlMode(0);
+        //DriveSubsystem.right1.setControlMode(0);
+        //DriveSubsystem.right2.setControlMode(0);
         Robot.driveSubsystem.ResetGyroAngle();
         Start = System.currentTimeMillis();
-        Robot.driveSubsystem.CompressorControl();
+        
     }
     
     
     @Override
     protected void execute() {
+    	Robot.driveSubsystem.cameraControl();
     	End = System.currentTimeMillis();
     	if(End-Start >100){
     	Robot.driveSubsystem.US.ping();
@@ -45,7 +48,7 @@ public class DriveCommand extends Command {
     	}
     	System.out.println(USDistance);
     	double error = USDistance - RequiredDistance;
-    	
+    	double robotUSOut = error * 0.001;
     	//Gear Toggle
     	OI.Operator.toggleBank.put("RBC", OI.Operator.boolfalsetotruelistener(OI.OGearPistonToggle(),OI.Operator.toggleBank.get("RBP")));
         OI.Operator.toggleBank.put("RBP", OI.OGearPistonToggle());
@@ -69,9 +72,24 @@ public class DriveCommand extends Command {
     		//Vision Tracking Toggle
     		if(OI.DToggleVision()){
     		Robot.driveSubsystem.VisionDrive(Robot.x, Robot.x2);	
-    		}   		
+    		}
+    		/*if(Math.abs(error)>20 && OI.DRangeFinderRecord()){
+	    		if(robotUSOut < Robot.driveSubsystem.minimalvoltage && robotUSOut > 0){
+	    		Robot.driveSubsystem.speed = Robot.driveSubsystem.minimalvoltage;
+	    		}else if (robotUSOut > -Robot.driveSubsystem.minimalvoltage && robotUSOut < 0){
+	    		Robot.driveSubsystem.speed = -Robot.driveSubsystem.minimalvoltage;
+	    		}else{
+	    		Robot.driveSubsystem.speed = robotUSOut;
+	    		}
+	    	}else{
+	    		Robot.driveSubsystem.speed = OI.DgetSpeed();
+	    	}*/
     		Robot.driveSubsystem.setSetpoint(Robot.driveSubsystem.GyroDrive(OI.DgetTurn()));
+    		if(USDistance < 1000 && OI.DgetSpeed() > 0){
+    			Robot.driveSubsystem.speed = Robot.driveSubsystem.minimalvoltage;
+    		}else{
     		Robot.driveSubsystem.speed = OI.DgetSpeed();
+    		}
     		Robot.driveSubsystem.arcadeDrive(Robot.driveSubsystem.rotateToAngleRate, Robot.driveSubsystem.speed);
     		
     		DriveSubsystem.setGearShift();
@@ -82,14 +100,12 @@ public class DriveCommand extends Command {
 	    	GyroInit = true;
 	    	EncoderInit = true;
 	    	// TESTING
-	    	if(Math.abs(error)>10 && OI.DRangeFinderRecord()){
-	    		Robot.driveSubsystem.arcadeDrive(OI.DgetTurn(), error * 0.001);
-	    	}else if(USDistance < 100 && OI.DgetSpeed() > Robot.driveSubsystem.minimalvoltage){
-	    		Robot.driveSubsystem.arcadeDrive(OI.DgetTurn(), Robot.driveSubsystem.minimalvoltage);
-	    	}else{
+	    	
+	    	System.out.println("USout" + robotUSOut);
+	    	
 	    	// TESTING
 	    	Robot.driveSubsystem.arcadeDrive(OI.DgetTurn(), OI.DgetSpeed());
-	    	}
+	    	
 	    	Robot.driveSubsystem.speed = OI.DgetSpeed();
 	    	DriveSubsystem.shiftGear(OI.DHighGear(),OI.DLowGear());
 	    	DriveSubsystem.setGearShift();

@@ -1,20 +1,27 @@
 package org.usfirst.frc.team1334.robot;
 
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.usfirst.frc.team1334.robot.commands.CenterPeg;
 import org.usfirst.frc.team1334.robot.commands.ClimbCommand;
 import org.usfirst.frc.team1334.robot.commands.DriveCommand;
 import org.usfirst.frc.team1334.robot.commands.IntakeCommand;
+import org.usfirst.frc.team1334.robot.commands.LeftPeg;
+import org.usfirst.frc.team1334.robot.commands.RightPeg;
+import org.usfirst.frc.team1334.robot.commands.TestCommand;
 import org.usfirst.frc.team1334.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1334.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team1334.robot.subsystems.IntakeSubsystem;
@@ -27,7 +34,7 @@ public class Robot extends IterativeRobot
 	//few different auto programs
 	static int autoNumber = 11;
 	//autoFile is a global constant that keeps you from recording into a different file than the one you play from
-	static final String autoFile = new String("/home/lvuser/recordedAuto" + autoNumber + ".csv");
+	public static String autoFile = new String("/home/lvuser/Center.csv");
 	public static DriveSubsystem driveSubsystem;
 	public static ClimberSubsystem climberSubsystem;
 	public static IntakeSubsystem intakeSubsystem;
@@ -42,13 +49,21 @@ public class Robot extends IterativeRobot
     BTMacroRecord recorder = null;
     boolean isRecording = false;
     boolean togglerecord = false;
-    Command autonomousCommand;
-    double FOV;
-    NetworkTable Pitable;
+    CommandGroup autonomousCommand;
+    SendableChooser<CommandGroup> AutoChooser;
+    //SendableChooser<String> AutoChooser;
+    public static double FOV;
+	public static double StartPing;
+	public static double EndPing;
+    public static NetworkTable Pitable;
     
     @Override
     public void robotInit()
     {
+    	AutoChooser = new SendableChooser<CommandGroup>();
+    	//AutoChooser = new SendableChooser<String>();
+    	SmartDashboard.putData("Autonomous Selector",AutoChooser);
+    	
         driveSubsystem  = new DriveSubsystem();
         oi = new OI();
         driveCommand = new DriveCommand();
@@ -57,6 +72,22 @@ public class Robot extends IterativeRobot
         climberSubsystem = new ClimberSubsystem();
         climbCommand = new ClimbCommand();
         Pitable = NetworkTable.getTable("Pitable");
+        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+        camera.setResolution(640, 480);
+       
+        AutoChooser.addDefault("Red Center", new CenterPeg());
+        AutoChooser.addObject("Red Left", new LeftPeg());
+        AutoChooser.addObject("Red Right", new RightPeg());
+        AutoChooser.addObject("Blue Center", new CenterPeg());
+        AutoChooser.addObject("Blue Left", new LeftPeg());
+        AutoChooser.addObject("Blue Right", new RightPeg());
+        /*
+        AutoChooser.addDefault("Red Center", "/home/lvuser/RCenter.csv");
+    	AutoChooser.addObject("Red Left", "/home/lvuser/RLeft.csv");
+    	AutoChooser.addObject("Red Right", "/home/lvuser/RRight.csv");
+    	AutoChooser.addObject("Blue Center", "/home/lvuser/BCenter.csv");
+    	AutoChooser.addObject("Blue Left", "/home/lvuser/BLeft.csv");
+    	AutoChooser.addObject("Blue Right", "/home/lvuser/BRight.csv");*/
     }
 
 
@@ -69,13 +100,20 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit()
     {
-
+    	Robot.driveSubsystem.ResetGyroAngle();
+    	autonomousCommand = new CenterPeg();
+    	if(autonomousCommand!=null){autonomousCommand.start();}
+    	//Robot.autoFile = (String) AutoChooser.getSelected();
+    	StartPing = System.currentTimeMillis();
+    	Robot.driveSubsystem.gearPiston(false);
+    	Robot.climberSubsystem.climbPiston(false);
+    	Robot.driveSubsystem.shiftGear(true, false);
     	
     	
     	//try to create a new player
     	//if there is a file, great - you have a new non-null object "player"
-    	driveSubsystem.ahrs.reset();
-    	try 
+    	
+    	/*try 
     	{
     		 player = new BTMacroPlay();
 		} 
@@ -84,8 +122,8 @@ public class Robot extends IterativeRobot
 		catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
-		}
-    	if (autonomousCommand != null) autonomousCommand.start();
+		}*/
+    	
     }
 
 
@@ -94,32 +132,45 @@ public class Robot extends IterativeRobot
      */
     public void autonomousPeriodic()
     {
-    	FOV = 640;
-    	x = Pitable.getNumber("x", FOV/2);
-    	x2 =Pitable.getNumber("x2", FOV/2);
-		if (player != null)
+    	
+    	
+		/*if (player != null)
 		{
 			player.play();
-		}
-        Scheduler.getInstance().run();
+		}*/
+    	Robot.x = Robot.Pitable.getNumber("x", Robot.FOV/2);
+    	Robot.x2 =Robot.Pitable.getNumber("x2", Robot.FOV/2);
+    	
+    	Robot.EndPing = System.currentTimeMillis();
+    	if(Robot.EndPing-Robot.StartPing >100){
+    	Robot.driveSubsystem.US.ping();
+    	Robot.StartPing = Robot.EndPing;
+    	}
+    	
+    	if(Robot.driveSubsystem.US.getRangeMM() >= 20 && Robot.driveSubsystem.US.getRangeMM() <= 4000){
+    	Robot.Distance = Robot.driveSubsystem.US.getRangeMM();
+    	}
+    	Scheduler.getInstance().run();
     }
 
     public void teleopInit()
     {
+    	
     	autoNumber +=1;
     	isRecording = false;
-    	try {
+    	/*try {
 			recorder = new BTMacroRecord();
 		} 
 		catch (IOException e) 
 		{
 			e.printStackTrace();
 			System.out.println("oopsie!");
-		}
-        if (autonomousCommand != null) autonomousCommand.cancel();
+		}*/
+        
         driveCommand.start();
         climbCommand.start();
         intakeCommand.start();
+        if(autonomousCommand!=null){autonomousCommand.cancel();}
     }
 
     @Override
@@ -134,6 +185,9 @@ public class Robot extends IterativeRobot
     	SmartDashboard.putNumber("OUTPUT", driveSubsystem.getPIDController().get());
     	SmartDashboard.putNumber("ERROR", driveSubsystem.getPIDController().getAvgError());
     	SmartDashboard.putData("DriveSubsystem", driveSubsystem.getPIDController());
+    	SmartDashboard.putBoolean("Gear", driveSubsystem.gear1.get());
+    	SmartDashboard.putBoolean("Climber", climberSubsystem.climb1.get());
+    	SmartDashboard.putBoolean("Shift", driveSubsystem.shiftup.get());
     	 // PID GRAPH
     	SmartDashboard.putNumber("SETPOINT",driveSubsystem.getPIDController().getSetpoint());
     	SmartDashboard.putNumber("CURRENT YAW",driveSubsystem.ahrs.pidGet());
@@ -153,7 +207,7 @@ public class Robot extends IterativeRobot
 		if (isRecording)
 		{
 			afterrecord = true;
-			try
+			/*try
 			{
 				//if we succesfully have made the recorder object, lets start recording stuff
 				if(recorder != null)
@@ -165,15 +219,15 @@ public class Robot extends IterativeRobot
 			catch (IOException e) 
 			{
 				e.printStackTrace();
-			}
+			}*/
 		}else if(afterrecord && isRecording == false){
-			if(recorder!=null){
+			/*if(recorder!=null){
 				try {
 					recorder.end();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}
+			}*/
 		}
 
     }

@@ -49,6 +49,8 @@ public class BTMacroRecord {
 		// example append writer.append("," + storage.robot.getFrontLeftMotor().get());
 		writer.append("," + OI.DgetTurn());
 		writer.append("," + OI.DgetSpeed());
+		writer.append("," + Robot.driveCommand.USDistance);
+		writer.append("," + OI.DRangeFinderRecord());
 		writer.append("," + OI.DToggleVision());
 		writer.append("," + OI.OGearPistonToggle());
 		writer.append("," + OI.DLowGear());

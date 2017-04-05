@@ -82,7 +82,7 @@ public class ClimberSubsystem extends Subsystem{
 		return false;
 	}
 	
-	public boolean isStalledRatio(double cap, double ratio){
+	public boolean isStalledRatio(double ratio){
 		double current = climber.getOutputCurrent();
 		
 		CurrentQueue.add(current);

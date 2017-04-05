@@ -32,10 +32,10 @@ public class DriveSubsystem extends PIDSubsystem{
 	public static Talon left2  = new Talon(RobotMap.left2);
 	public static Talon right1 = new Talon(RobotMap.right1);
 	public static Talon right2 = new Talon(RobotMap.right2);
-	public Servo camPan = new Servo(RobotMap.campan);
-	public Servo camTilt = new Servo(RobotMap.camtilt);
+	//public Servo camPan = new Servo(RobotMap.campan);
+	//public Servo camTilt = new Servo(RobotMap.camtilt);
 	public AnalogInput URF1 = new AnalogInput(0);
-	public float minimalvoltage = 0.34f;
+	public float minimalvoltage = 0.30f;//0.15
 	public double post = 0;
 	public double negt = 0;
 	public DriveSubsystem()
@@ -64,9 +64,13 @@ public class DriveSubsystem extends PIDSubsystem{
     @Override
     protected void initDefaultCommand() {	
         left1.setSafetyEnabled(true);
+        //left1.setVoltageRampRate(36);
         left2.setSafetyEnabled(true);
+        //left2.setVoltageRampRate(36);
         right1.setSafetyEnabled(true);
+        //right1.setVoltageRampRate(36);
         right2.setSafetyEnabled(true);
+        //right2.setVoltageRampRate(36);
         left1.setExpiration(0.1);
         left2.setExpiration(0.1);
         right2.setExpiration(0.1);
@@ -88,6 +92,13 @@ public class DriveSubsystem extends PIDSubsystem{
     public void CompressorControl(){
     	C.setClosedLoopControl(true);    
     }
+    
+    
+    public void cameraControl(){
+    	//camPan.set(Math.abs(OI.OgetPan()));
+    	//camTilt.set(Math.abs(OI.OgetTilt()));
+    }
+    
     public static void tankDrive(double left,double right)
     {
         left1.set(left);
@@ -146,13 +157,13 @@ public class DriveSubsystem extends PIDSubsystem{
     	ahrs.reset();
     	angle = 0;
     }
-    Double error;
+    public Double error;
     public void VisionDrive(double X1,double X2){
     	double centerx = (X1+X2)/2;
     	System.out.println("centerx " + centerx);
     	
     	
-    	error = centerx - 80 - (640/2);
+    	error = centerx - 20 - (640/2);
     	
     	System.out.println("error" + error);
     	if(Math.abs(error)>25){
@@ -162,7 +173,7 @@ public class DriveSubsystem extends PIDSubsystem{
     }
     
     public double GyroDrive(double turn){
-    	angle+=(3*Math.pow(turn, 3));
+    	angle+=turn;
     	b = (int)angle/180;
     	angle = (float) (angle * Math.pow(-1, b));
     	return angle;

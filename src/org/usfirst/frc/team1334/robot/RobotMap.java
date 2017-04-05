@@ -21,8 +21,8 @@ public class RobotMap {
     public static final int left2   = 1;
     public static final int right1  = 2;
     public static final int right2  = 3;    
-    public static final int campan = 5;
-    public static final int camtilt = 6;    
+    public static final int campan = 0;
+    public static final int camtilt = 1;    
     public static final int shiftup = 0;
     public static final int shiftdown = 1;
     public static final int climber1 = 2;
