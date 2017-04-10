@@ -11,7 +11,7 @@ public class TestCommand extends CommandGroup {
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
         // these will run in order.
-    	addSequential(new GyroTurn(120));
+    	addSequential(new AutonomousDriveCommand(3000,0.75));
         // To run multiple commands at the same time,
         // use addParallel()
         // e.g. addParallel(new Command1());

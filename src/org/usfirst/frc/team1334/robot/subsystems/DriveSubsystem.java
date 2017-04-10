@@ -28,14 +28,14 @@ import org.usfirst.frc.team1334.robot.RobotMap;
 public class DriveSubsystem extends PIDSubsystem{
 
 	public double kToleranceDegrees = 2.0;
-	public static Talon left1  = new Talon(RobotMap.left1);
-	public static Talon left2  = new Talon(RobotMap.left2);
-	public static Talon right1 = new Talon(RobotMap.right1);
-	public static Talon right2 = new Talon(RobotMap.right2);
+	public static CANTalon left1  = new CANTalon(RobotMap.left1);
+	public static CANTalon left2  = new CANTalon(RobotMap.left2);
+	public static CANTalon right1 = new CANTalon(RobotMap.right1);
+	public static CANTalon right2 = new CANTalon(RobotMap.right2);
 	//public Servo camPan = new Servo(RobotMap.campan);
 	//public Servo camTilt = new Servo(RobotMap.camtilt);
 	public AnalogInput URF1 = new AnalogInput(0);
-	public float minimalvoltage = 0.30f;//0.15
+	public float minimalvoltage = 0.23f;//0.15
 	public double post = 0;
 	public double negt = 0;
 	public DriveSubsystem()
@@ -55,6 +55,8 @@ public class DriveSubsystem extends PIDSubsystem{
     public static Solenoid shiftdown = new Solenoid(RobotMap.shiftdown);
     public Solenoid gear1 = new Solenoid(RobotMap.gear1);
     public Solenoid gear2 = new Solenoid(RobotMap.gear2);
+    public Solenoid flap1 = new Solenoid(RobotMap.climber1);
+    public Solenoid flap2 = new Solenoid(RobotMap.climber2);
     public static boolean highGear = false;
     public Compressor C = new Compressor(0);
     public static final int cameraFOVdegrees = 63;
@@ -99,6 +101,17 @@ public class DriveSubsystem extends PIDSubsystem{
     	//camTilt.set(Math.abs(OI.OgetTilt()));
     }
     
+    public void Flap(boolean isOut){
+    	if(isOut){
+    		flap1.set(true);
+    		flap2.set(false);
+    	}else{
+    		flap1.set(false);
+    		flap2.set(true);
+    	}
+    	
+    }
+    
     public static void tankDrive(double left,double right)
     {
         left1.set(left);
@@ -107,17 +120,18 @@ public class DriveSubsystem extends PIDSubsystem{
         right2.set(right);
     }
     public void driveControlMode(){
-    	//left1.setControlMode(0);
-    	//left2.setControlMode(0);
-    	//right1.setControlMode(0);
-    	//right2.setControlMode(0);
+    	left1.setControlMode(0);
+    	left2.setControlMode(0);
+    	right1.setControlMode(0);
+    	right2.setControlMode(0);
     }
+    
     public void arcadeDrive(double turn,double speed)
     {
     	//high gear speed
-        if(highGear)tankDrive((-speed)+turn,(speed)+turn);
+        if(highGear)tankDrive((-speed)-turn,(speed)-turn);
         //low gear speed
-        else if(!highGear)tankDrive((-speed)+turn,(speed)+turn);
+        else if(!highGear)tankDrive((-speed)-turn,(speed)-turn);
         /*System.out.println("angle " + angle);
         System.out.println("PID " + ahrs.pidGet());
         System.out.println("Error " + turnController.getError());
@@ -163,10 +177,10 @@ public class DriveSubsystem extends PIDSubsystem{
     	System.out.println("centerx " + centerx);
     	
     	
-    	error = centerx - 20 - (640/2);
+    	error = centerx + 7 - (640/2);//20
     	
     	System.out.println("error" + error);
-    	if(Math.abs(error)>25){
+    	if(Math.abs(error)>5){
     	angle = (float)(angle + error*0.002);
     	}
     	

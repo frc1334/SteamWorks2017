@@ -45,6 +45,10 @@ public class UltraDistanceCommand extends Command {
 	    		Robot.driveSubsystem.speed = Robot.driveSubsystem.minimalvoltage * 0.8;
 	    	}else if (robotUSOut > -Robot.driveSubsystem.minimalvoltage * 0.8 && robotUSOut < 0){
 	    		Robot.driveSubsystem.speed = -Robot.driveSubsystem.minimalvoltage * 0.8;
+	    	}else if (robotUSOut > 0.45){
+	    		Robot.driveSubsystem.speed = 0.45;
+	    	}else if(robotUSOut < -0.45){
+	    		Robot.driveSubsystem.speed = -0.45;
 	    	}else{
 	    		Robot.driveSubsystem.speed = robotUSOut;
 	    	}
@@ -55,7 +59,7 @@ public class UltraDistanceCommand extends Command {
     	
     	
     	Robot.driveSubsystem.usePIDOutput(Robot.driveSubsystem.getPIDController().get());
-    	Robot.driveSubsystem.arcadeDrive(Robot.driveSubsystem.rotateToAngleRate,-Robot.driveSubsystem.speed);
+    	Robot.driveSubsystem.arcadeDrive(Robot.driveSubsystem.rotateToAngleRate,Robot.driveSubsystem.speed);
     	
     }
 

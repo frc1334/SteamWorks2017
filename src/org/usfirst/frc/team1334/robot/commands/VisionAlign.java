@@ -37,7 +37,7 @@ public class VisionAlign extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if(End-Start>500){
+        if(End-Start>1000){
         	return true;
         }
         return false;

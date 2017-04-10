@@ -17,10 +17,10 @@ public class RobotMap {
     // public static int rangefinderModule = 1;
    
 	//DRIVESUBSYSTEM
-    public static final int left1   = 0;
-    public static final int left2   = 1;
-    public static final int right1  = 2;
-    public static final int right2  = 3;    
+    public static final int left1   = 1;
+    public static final int left2   = 2;
+    public static final int right1  = 3;
+    public static final int right2  = 4;    
     public static final int campan = 0;
     public static final int camtilt = 1;    
     public static final int shiftup = 0;
@@ -29,6 +29,8 @@ public class RobotMap {
     public static final int climber2 = 3;
     public static final int gear1 = 5;
     public static final int gear2 = 7;
+    public static final int eject1 = 4;//TODO
+    public static final int eject2 = 6;//TODO
     //END DRIVESUBSYSTEM
 
     //INTAKESUBSYSTEM

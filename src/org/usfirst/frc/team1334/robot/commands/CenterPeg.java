@@ -12,11 +12,11 @@ public class CenterPeg extends CommandGroup {
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
         // these will run in order.
-    	addSequential(new AutonomousDriveCommand(250,0.5));
+    	addSequential(new AutonomousDriveCommand(250,-0.5));
     	addSequential(new VisionAlign());
-    	addSequential(new UltraDistanceCommand(120,500,620));
-    	//addSequential(new PistonStateSwitch(500));
-    	addSequential(new AutonomousDriveCommand(250,-1));
+    	addSequential(new UltraDistanceCommand(250,500,620));
+    	addSequential(new PistonStateSwitch(2000));
+    	addSequential(new AutonomousDriveCommand(600,0.4));
         // To run multiple commands at the same time,
         // use addParallel()
         // e.g. addParallel(new Command1());

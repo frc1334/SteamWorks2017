@@ -25,10 +25,10 @@ public class DriveCommand extends Command {
 
     @Override
     protected void initialize() {
-		//DriveSubsystem.left1.setControlMode(0);
-        //DriveSubsystem.left2.setControlMode(0);
-        //DriveSubsystem.right1.setControlMode(0);
-        //DriveSubsystem.right2.setControlMode(0);
+		DriveSubsystem.left1.setControlMode(0);
+        DriveSubsystem.left2.setControlMode(0);
+        DriveSubsystem.right1.setControlMode(0);
+        DriveSubsystem.right2.setControlMode(0);
         Robot.driveSubsystem.ResetGyroAngle();
         Start = System.currentTimeMillis();
         
@@ -49,13 +49,14 @@ public class DriveCommand extends Command {
     	System.out.println(USDistance);
     	double error = USDistance - RequiredDistance;
     	double robotUSOut = error * 0.001;
+    	Robot.driveSubsystem.Flap(OI.OClimbGuidePistonToggle());
     	//Gear Toggle
-    	OI.Operator.toggleBank.put("RBC", OI.Operator.boolfalsetotruelistener(OI.OGearPistonToggle(),OI.Operator.toggleBank.get("RBP")));
-        OI.Operator.toggleBank.put("RBP", OI.OGearPistonToggle());
-        if(OI.Operator.toggleBank.get("RBC")){
-        	Robot.driveSubsystem.gearIn = !Robot.driveSubsystem.gearIn;
-        }
-    	Robot.driveSubsystem.gearPiston(Robot.driveSubsystem.gearIn);
+    	//OI.Operator.toggleBank.put("RBC", OI.Operator.boolfalsetotruelistener(OI.OGearPistonToggle(),OI.Operator.toggleBank.get("RBP")));
+        //OI.Operator.toggleBank.put("RBP", OI.OGearPistonToggle());
+        //if(OI.Operator.toggleBank.get("RBC")){
+        //	Robot.driveSubsystem.gearIn = !Robot.driveSubsystem.gearIn;
+        //}
+    	Robot.driveSubsystem.gearPiston(!OI.OGearPistonToggle());
     	//Gyro PID Toggle
     	OI.Driver.toggleBank.put("XC", OI.Driver.boolfalsetotruelistener(OI.DEnableGyro(),OI.Driver.toggleBank.get("XP")));
         OI.Driver.toggleBank.put("XP", OI.DEnableGyro());
@@ -85,11 +86,11 @@ public class DriveCommand extends Command {
 	    		Robot.driveSubsystem.speed = OI.DgetSpeed();
 	    	}*/
     		Robot.driveSubsystem.setSetpoint(Robot.driveSubsystem.GyroDrive(OI.DgetTurn()));
-    		if(USDistance < 1000 && OI.DgetSpeed() > 0){
-    			Robot.driveSubsystem.speed = Robot.driveSubsystem.minimalvoltage;
-    		}else{
+    		//if(USDistance < 1000 && OI.DgetSpeed() > 0){
+    			//Robot.driveSubsystem.speed = Robot.driveSubsystem.minimalvoltage;
+    		//}else{
     		Robot.driveSubsystem.speed = OI.DgetSpeed();
-    		}
+    		//}
     		Robot.driveSubsystem.arcadeDrive(Robot.driveSubsystem.rotateToAngleRate, Robot.driveSubsystem.speed);
     		
     		DriveSubsystem.setGearShift();

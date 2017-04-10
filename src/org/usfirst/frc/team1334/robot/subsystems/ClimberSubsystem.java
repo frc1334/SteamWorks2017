@@ -14,16 +14,36 @@ import com.ctre.CANTalon;
 
 public class ClimberSubsystem extends Subsystem{
 	public CANTalon climber = new CANTalon(RobotMap.climber);
-	public Solenoid climb1 = new Solenoid(RobotMap.climber1);
-	public Solenoid climb2 = new Solenoid(RobotMap.climber2);
+	public Solenoid climb1 = new Solenoid(RobotMap.eject1);
+	public Solenoid climb2 = new Solenoid(RobotMap.eject2);
 	public static float climberstop = 0.0f;
 	public boolean isReversed;
+	double Start = System.currentTimeMillis();
+	double End = System.currentTimeMillis();
 	LinkedList<Double> CurrentQueue = new LinkedList<Double>();
 	@Override
 	protected void initDefaultCommand() {
 		climber.setControlMode(0);
 		
 	}
+	
+	public void Eject(boolean isEject, boolean isSafe){
+    	
+    	
+    	if(isSafe){
+    		End = System.currentTimeMillis();
+    	}else{
+    		Start = System.currentTimeMillis();
+    	}
+    	
+    	if(isEject && End-Start > 500){
+    		climb1.set(true);
+    		climb2.set(false);
+    	}else{
+    		climb1.set(false);
+    		climb2.set(true);
+    	}
+    }
 	
 	public Double QueueSum(Queue<Double>Q){
 		Double sum = 0.0;

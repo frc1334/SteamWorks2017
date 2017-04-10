@@ -30,7 +30,7 @@ public class OI {
     public static boolean OIntake() {return Operator.getButtonA();}
     public static boolean ODump() {return Operator.getButtonB();}
     public static boolean OClimbUp() {return Operator.getButtonX();}
-    public static boolean OClimbDown() {return Operator.getButtonY();}
+    public static boolean OEject() {return Operator.getButtonY();}
     public static boolean OGearPistonToggle(){return Operator.getButtonRB();}
     public static boolean OClimbGuidePistonToggle(){return Operator.getButtonLB();}
     

@@ -28,12 +28,15 @@ public class ClimbCommand extends Command{
     protected void execute() {
     	//isReversed = Robot.climberSubsystem.reverseClimb(OI.OClimbDown());
         Robot.climberSubsystem.climb(OI.OClimbUp(), isReversed);
-        OI.Operator.toggleBank.put("LBC", OI.Operator.boolfalsetotruelistener(OI.OClimbGuidePistonToggle(),OI.Operator.toggleBank.get("LBP")));
-        OI.Operator.toggleBank.put("LBP", OI.OClimbGuidePistonToggle());
-        if(OI.Operator.toggleBank.get("LBC")){
-        	pistonOut = !pistonOut;
-        }
-        Robot.climberSubsystem.climbPiston(pistonOut);
+        //Robot.climberSubsystem.climbPiston(OI.OEject());
+        Robot.climberSubsystem.Eject(OI.OEject(), Robot.driveSubsystem.gear2.get());
+        Robot.driveSubsystem.gear1.get();
+        //OI.Operator.toggleBank.put("LBC", OI.Operator.boolfalsetotruelistener(OI.OClimbGuidePistonToggle(),OI.Operator.toggleBank.get("LBP")));
+        //OI.Operator.toggleBank.put("LBP", OI.OClimbGuidePistonToggle());
+        //if(OI.Operator.toggleBank.get("LBC")){
+        //	pistonOut = !pistonOut;
+       // }
+        
     }
 
     @Override

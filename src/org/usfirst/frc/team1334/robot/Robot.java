@@ -19,8 +19,10 @@ import org.usfirst.frc.team1334.robot.commands.CenterPeg;
 import org.usfirst.frc.team1334.robot.commands.ClimbCommand;
 import org.usfirst.frc.team1334.robot.commands.DriveCommand;
 import org.usfirst.frc.team1334.robot.commands.IntakeCommand;
-import org.usfirst.frc.team1334.robot.commands.LeftPeg;
-import org.usfirst.frc.team1334.robot.commands.RightPeg;
+import org.usfirst.frc.team1334.robot.commands.RedLeftPeg;
+import org.usfirst.frc.team1334.robot.commands.RedRightPeg;
+import org.usfirst.frc.team1334.robot.commands.BlueLeftPeg;
+import org.usfirst.frc.team1334.robot.commands.BlueRightPeg;
 import org.usfirst.frc.team1334.robot.commands.TestCommand;
 import org.usfirst.frc.team1334.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1334.robot.subsystems.DriveSubsystem;
@@ -62,7 +64,7 @@ public class Robot extends IterativeRobot
     {
     	AutoChooser = new SendableChooser<CommandGroup>();
     	//AutoChooser = new SendableChooser<String>();
-    	SmartDashboard.putData("Autonomous Selector",AutoChooser);
+    	
     	
         driveSubsystem  = new DriveSubsystem();
         oi = new OI();
@@ -75,12 +77,14 @@ public class Robot extends IterativeRobot
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
         camera.setResolution(640, 480);
        
-        AutoChooser.addDefault("Red Center", new CenterPeg());
-        AutoChooser.addObject("Red Left", new LeftPeg());
-        AutoChooser.addObject("Red Right", new RightPeg());
-        AutoChooser.addObject("Blue Center", new CenterPeg());
-        AutoChooser.addObject("Blue Left", new LeftPeg());
-        AutoChooser.addObject("Blue Right", new RightPeg());
+        AutoChooser.addDefault("Center", new CenterPeg());
+        AutoChooser.addObject("Red Left", new BlueLeftPeg());
+        AutoChooser.addObject("Red Right", new BlueRightPeg());
+        AutoChooser.addObject("Blue Left", new RedLeftPeg());
+        AutoChooser.addObject("Blue Right", new RedRightPeg());
+        AutoChooser.addObject("DONOTCLICK", new TestCommand());
+        
+        SmartDashboard.putData("Autonomous Selector",AutoChooser);
         /*
         AutoChooser.addDefault("Red Center", "/home/lvuser/RCenter.csv");
     	AutoChooser.addObject("Red Left", "/home/lvuser/RLeft.csv");
@@ -105,8 +109,8 @@ public class Robot extends IterativeRobot
     	if(autonomousCommand!=null){autonomousCommand.start();}
     	//Robot.autoFile = (String) AutoChooser.getSelected();
     	StartPing = System.currentTimeMillis();
-    	Robot.driveSubsystem.gearPiston(false);
-    	Robot.climberSubsystem.climbPiston(false);
+    	Robot.driveSubsystem.gearPiston(true);
+    	Robot.driveSubsystem.Flap(false);
     	Robot.driveSubsystem.shiftGear(true, false);
     	
     	
