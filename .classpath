@@ -10,5 +10,6 @@
 	<classpathentry kind="var" path="USERLIBS_DIR/navx_frc.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/NetworkTables-3.0.0-20160107.180902-2-desktop.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/TalonSRXLibJava.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/WPILib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

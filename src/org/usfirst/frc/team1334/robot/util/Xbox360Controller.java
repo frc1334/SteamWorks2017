@@ -1,69 +1,73 @@
-package Util;
-
-import java.util.HashMap;
+package org.usfirst.frc.team1334.robot.util;
 
 import edu.wpi.first.wpilibj.Joystick;
 
-public class Xbox360Controller extends Joystick {
-    private double deadzone = 0.15;
+import java.util.HashMap;
+
+public class Xbox360Controller extends Joystick
+{
     // a HashMap which holds a pair of variables for each button on the Xbox360Controller which can be pressed,
     // one for holding the result of this button's respective booleanfalsetotruelistener
     // another for holding the button's previous state
     // the convention for using this bank is that the boolean which stores the change is " 'buttonname'C"
-    // E.G. 
+    // E.G.
     // the button which stores the previous value is" 'buttonname'P"
     // I will create a method to update all of the buttons' boolfalsetotruelisteners when called once within a loop
     // and probably another one for true to false
     // kind of like the keypressed and keyreleased methods in a KeyListener
-    public HashMap<String,Boolean> toggleBank = new HashMap<String,Boolean>();
-    public void toggleInit(){
-    	toggleBank.put("AC",false);
-    	toggleBank.put("BC",false);
-    	toggleBank.put("XC",false);
-    	toggleBank.put("YC",false);
-    	toggleBank.put("RBC",false);
-    	toggleBank.put("LBC",false);
-    	toggleBank.put("BackC",false);
-    	toggleBank.put("StartC",false);
-    	toggleBank.put("LeftClickC",false);
-    	toggleBank.put("RightClickC",false);
-    	toggleBank.put("AP",false);
-    	toggleBank.put("BP",false);
-    	toggleBank.put("XP",false);
-    	toggleBank.put("YP",false);
-    	toggleBank.put("RBP",false);
-    	toggleBank.put("LBP",false);
-    	toggleBank.put("BackP",false);
-    	toggleBank.put("StartP",false);
-    	toggleBank.put("LeftClickP",false);
-    	toggleBank.put("RightClickP",false);
+    public HashMap<String, Boolean> toggleBank = new HashMap<String, Boolean>();
+    private double deadzone = 0.15;
+
+    public Xbox360Controller(int port)
+    {
+        super(port);
     }
-    
-    public boolean boolfalsetotruelistener(boolean bool,boolean previous){
-    	if(bool != previous && bool == true){
-    		return true;
-    	}else{
-    		return false;
-    	}   	
-    }
-    
-    
-    
-    public Xbox360Controller(int port) {super(port);}
 
     public Xbox360Controller(int port, double deadzone)
     {
-    super(port);
+        super(port);
         this.deadzone = deadzone;
         this.toggleInit();
     }
-    
+
+    private void toggleInit()
+    {
+        toggleBank.put("AC", false);
+        toggleBank.put("BC", false);
+        toggleBank.put("XC", false);
+        toggleBank.put("YC", false);
+        toggleBank.put("RBC", false);
+        toggleBank.put("LBC", false);
+        toggleBank.put("BackC", false);
+        toggleBank.put("StartC", false);
+        toggleBank.put("LeftClickC", false);
+        toggleBank.put("RightClickC", false);
+        toggleBank.put("AP", false);
+        toggleBank.put("BP", false);
+        toggleBank.put("XP", false);
+        toggleBank.put("YP", false);
+        toggleBank.put("RBP", false);
+        toggleBank.put("LBP", false);
+        toggleBank.put("BackP", false);
+        toggleBank.put("StartP", false);
+        toggleBank.put("LeftClickP", false);
+        toggleBank.put("RightClickP", false);
+    }
+
+    public boolean boolfalsetotruelistener(boolean bool, boolean previous)
+    {
+        return bool != previous && bool;
+    }
+
     /**
      * Left Stick X Axis
      *
      * @return value
      */
-    public double getLeftXAxis(){return deadzone(this.getRawAxis(0));}
+    public double getLeftXAxis()
+    {
+        return deadzone(this.getRawAxis(0));
+    }
 
 
     /**
@@ -115,8 +119,8 @@ public class Xbox360Controller extends Joystick {
     {
         return deadzone(this.getRawAxis(5));
     }
-    
-    
+
+
     public boolean getButtonA()
     {
         return this.getRawButton(1);
@@ -162,7 +166,7 @@ public class Xbox360Controller extends Joystick {
         return this.getRawButton(9);
     }
 
-    public boolean  getClickRightStick()
+    public boolean getClickRightStick()
     {
         return this.getRawButton(10);
     }
