@@ -1,33 +1,27 @@
 package org.usfirst.frc.team1334.robot.subsystems;
 
-import org.usfirst.frc.team1334.robot.RobotMap;
-
 import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.usfirst.frc.team1334.robot.RobotMap;
 
-public class IntakeSubsystem extends Subsystem{
-	public CANTalon intakePickup = new CANTalon(RobotMap.intakePickup);
-	public CANTalon intakeDump = new CANTalon(RobotMap.intakeDump);
-	@Override
-	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public void runIntakePickup(boolean isSpinning){
-		if(isSpinning){
-			intakePickup.set(-1.0);
-		}else{
-			intakePickup.set(0.0);
-		}
-	}
-	
-	public void runIntakeDump(boolean isSpinning){
-		if(isSpinning){
-			intakeDump.set(-1.0);
-		}else{
-			intakeDump.set(0.0);
-		}
-	}
+public class IntakeSubsystem extends Subsystem
+{
+    public CANTalon intakePickup = new CANTalon(RobotMap.INTAKE_PICKUP);
+    public CANTalon intakeDump = new CANTalon(RobotMap.INTAKE_DUMP);
+
+    @Override
+    protected void initDefaultCommand()
+    {
+    }
+
+    public void runIntakePickup(boolean isSpinning)
+    {
+        intakeDump.set(isSpinning ? -1 : 0);
+    }
+
+    public void runIntakeDump(boolean isSpinning)
+    {
+        intakeDump.set(isSpinning ? -1 : 0);
+    }
 
 }

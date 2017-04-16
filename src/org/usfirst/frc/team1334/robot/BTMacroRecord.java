@@ -17,68 +17,69 @@ import java.io.IOException;
 */
 
 
-public class BTMacroRecord {
-	
-	//this object writes values into the file we specify
-	FileWriter writer;
-	
-	long startTime;
-	
-	public BTMacroRecord() throws IOException
-	{
-			//record the time we started recording
-			startTime = System.currentTimeMillis();
-			
-			//put the filesystem location you are supposed to write to as a string 
-			//as the argument in this method, as of 2015 it is /home/lvuser/recordedAuto.csv
-			writer = new FileWriter(Robot.autoFile);
-	}
-	
+public class BTMacroRecord
+{
 
-	public void record() throws IOException
-	{
-		if(writer != null)
-		{
-		//start each "frame" with the elapsed time since we started recording
-		writer.append("" + (System.currentTimeMillis()-startTime));
-		
-		//in this chunk, use writer.append to add each type of data you want to record to the frame
-		//the 2015 robot used the following motors during auto
-		
-		//drive motors
-		// example append writer.append("," + storage.robot.getFrontLeftMotor().get());
-		writer.append("," + OI.DgetTurn());
-		writer.append("," + OI.DgetSpeed());
-		writer.append("," + Robot.driveCommand.USDistance);
-		writer.append("," + OI.DRangeFinderRecord());
-		writer.append("," + OI.DToggleVision());
-		writer.append("," + OI.OGearPistonToggle());
-		writer.append("," + OI.DLowGear());
-		writer.append("," + OI.DHighGear() + "\n");
-		/*
-		 * THE LAST ENTRY OF THINGS YOU RECORD NEEDS TO HAVE A DELIMITER CONCATENATED TO 
+    //this object writes values into the file we specify
+    private FileWriter writer;
+
+    private long startTime;
+
+    public BTMacroRecord() throws IOException
+    {
+        //record the time we started recording
+        startTime = System.currentTimeMillis();
+
+        //put the filesystem location you are supposed to write to as a string
+        //as the argument in this method, as of 2015 it is /home/lvuser/recordedAuto.csv
+        writer = new FileWriter(Robot.autoFile);
+    }
+
+
+    public void record() throws IOException
+    {
+        if (writer != null)
+        {
+            //start each "frame" with the elapsed time since we started recording
+            writer.append(String.valueOf(System.currentTimeMillis() - startTime));
+
+            //in this chunk, use writer.append to add each type of data you want to record to the frame
+            //the 2015 robot used the following motors during auto
+
+            //drive motors
+            // example append writer.append("," + storage.robot.getFrontLeftMotor().get());
+            writer.append(",").append(String.valueOf(OI.DgetTurn()));
+            writer.append(",").append(String.valueOf(OI.DgetSpeed()));
+            writer.append(",").append(String.valueOf(Robot.driveCommand.USDistance));
+            writer.append(",").append(String.valueOf(OI.DRangeFinderRecord()));
+            writer.append(",").append(String.valueOf(OI.DToggleVision()));
+            writer.append(",").append(String.valueOf(OI.OGearPistonToggle()));
+            writer.append(",").append(String.valueOf(OI.DLowGear()));
+            writer.append(",").append(String.valueOf(OI.DHighGear())).append("\n");
+        /*
+         * THE LAST ENTRY OF THINGS YOU RECORD NEEDS TO HAVE A DELIMITER CONCATENATED TO
 		 * THE STRING AT THE END. OTHERWISE GIVES NOSUCHELEMENTEXCEPTION
-		 */ 
-		
-		//this records a true/false value from a piston
-		// example end delimiter writer.append("," + storage.robot.getToteClamp().isExtended() + "\n");
+		 */
+
+            //this records a true/false value from a piston
+            // example end delimiter writer.append("," + storage.robot.getToteClamp().isExtended() + "\n");
 		
 		/*
 		 * CAREFUL. KEEP THE LAST THING YOU RECORD BETWEEN THESE TWO COMMENTS AS A
 		 * REMINDER TO APPEND THE DELIMITER
 		 */
-		writer.flush();
-		}
-	}
-	
-	
-	//this method closes the writer and makes sure that all the data you recorded makes it into the file
-	public void end() throws IOException
-	{
-		if(writer !=null)
-		{
-		writer.flush();
-		writer.close();
-		}
-	}
+            writer.flush();
+        }
+    }
+
+
+    //this method closes the writer and makes sure that all the data you recorded makes it into the file
+    public void end() throws IOException
+    {
+        if (writer != null)
+        {
+            writer.flush();
+            writer.close();
+        }
+    }
 }
