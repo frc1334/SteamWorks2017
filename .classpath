@@ -9,6 +9,7 @@
 	<classpathentry kind="var" path="USERLIBS_DIR/jsch-0.1.54.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/navx_frc.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/NetworkTables-3.0.0-20160107.180902-2-desktop.jar"/>
-	<classpathentry kind="var" path="USERLIBS_DIR/TalonSRXLibJava.jar"/>
+	<classpathentry kind="lib" path="C:/Users/FRC1334/wpilib/user/java/lib/CTRE_Phoenix.jar"/>
+	<classpathentry kind="lib" path="C:/Users/FRC1334/wpilib/user/java/lib/CTRE_Phoenix-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

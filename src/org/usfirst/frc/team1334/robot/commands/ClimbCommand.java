@@ -4,6 +4,8 @@ import org.usfirst.frc.team1334.robot.OI;
 import org.usfirst.frc.team1334.robot.Robot;
 import org.usfirst.frc.team1334.robot.subsystems.DriveSubsystem;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ClimbCommand extends Command{
@@ -20,7 +22,7 @@ public class ClimbCommand extends Command{
 
     @Override
     protected void initialize() {
-		Robot.climberSubsystem.climber.setControlMode(0);
+		Robot.climberSubsystem.climber.set(ControlMode.PercentOutput,0);
         
     }
 

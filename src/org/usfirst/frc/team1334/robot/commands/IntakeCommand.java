@@ -3,6 +3,8 @@ package org.usfirst.frc.team1334.robot.commands;
 import org.usfirst.frc.team1334.robot.OI;
 import org.usfirst.frc.team1334.robot.Robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 public class IntakeCommand extends Command{
@@ -17,8 +19,8 @@ public class IntakeCommand extends Command{
 
     @Override
     protected void initialize() {
-		Robot.intakeSubsystem.intakeDump.setControlMode(0);
-		Robot.intakeSubsystem.intakePickup.setControlMode(0);
+		Robot.intakeSubsystem.intakeDump.set(ControlMode.PercentOutput,0);
+		Robot.intakeSubsystem.intakePickup.set(ControlMode.PercentOutput,0);
         
     }
 

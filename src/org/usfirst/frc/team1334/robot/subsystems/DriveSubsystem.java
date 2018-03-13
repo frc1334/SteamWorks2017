@@ -1,8 +1,7 @@
 package org.usfirst.frc.team1334.robot.subsystems;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.FeedbackDevice;
-import com.ctre.CANTalon.TalonControlMode;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Servo;
@@ -28,10 +27,10 @@ import org.usfirst.frc.team1334.robot.RobotMap;
 public class DriveSubsystem extends PIDSubsystem{
 
 	public double kToleranceDegrees = 2.0;
-	public static CANTalon left1  = new CANTalon(RobotMap.left1);
-	public static CANTalon left2  = new CANTalon(RobotMap.left2);
-	public static CANTalon right1 = new CANTalon(RobotMap.right1);
-	public static CANTalon right2 = new CANTalon(RobotMap.right2);
+	public static TalonSRX left1  = new TalonSRX(RobotMap.left1);
+	public static TalonSRX left2  = new TalonSRX(RobotMap.left2);
+	public static TalonSRX right1 = new TalonSRX(RobotMap.right1);
+	public static TalonSRX right2 = new TalonSRX(RobotMap.right2);
 	//public Servo camPan = new Servo(RobotMap.campan);
 	//public Servo camTilt = new Servo(RobotMap.camtilt);
 	public AnalogInput URF1 = new AnalogInput(0);
@@ -65,18 +64,7 @@ public class DriveSubsystem extends PIDSubsystem{
     public boolean gearIn = false;
     @Override
     protected void initDefaultCommand() {	
-        left1.setSafetyEnabled(true);
-        //left1.setVoltageRampRate(36);
-        left2.setSafetyEnabled(true);
-        //left2.setVoltageRampRate(36);
-        right1.setSafetyEnabled(true);
-        //right1.setVoltageRampRate(36);
-        right2.setSafetyEnabled(true);
-        //right2.setVoltageRampRate(36);
-        left1.setExpiration(0.1);
-        left2.setExpiration(0.1);
-        right2.setExpiration(0.1);
-        right1.setExpiration(0.1);
+
         try {
             /* Communicate w/navX MXP via the MXP SPI Bus.                                     */
             /* Alternatively:  I2C.Port.kMXP, SerialPort.Port.kMXP or SerialPort.Port.kUSB     */
@@ -114,16 +102,16 @@ public class DriveSubsystem extends PIDSubsystem{
     
     public static void tankDrive(double left,double right)
     {
-        left1.set(left);
-        left2.set(left);
-        right1.set(right);
-        right2.set(right);
+        left1.set(ControlMode.PercentOutput,left);
+        left2.set(ControlMode.PercentOutput,left);
+        right1.set(ControlMode.PercentOutput,right);
+        right2.set(ControlMode.PercentOutput,right);
     }
     public void driveControlMode(){
-    	left1.setControlMode(0);
-    	left2.setControlMode(0);
-    	right1.setControlMode(0);
-    	right2.setControlMode(0);
+    	left1.set(ControlMode.PercentOutput,0);
+    	left2.set(ControlMode.PercentOutput,0);
+    	right1.set(ControlMode.PercentOutput,0);
+    	right2.set(ControlMode.PercentOutput,0);
     }
     
     public void arcadeDrive(double turn,double speed)

@@ -11,9 +11,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.usfirst.frc.team1334.robot.RobotMap;
 
 import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class ClimberSubsystem extends Subsystem{
-	public CANTalon climber = new CANTalon(RobotMap.climber);
+	public TalonSRX climber = new TalonSRX(RobotMap.climber);
 	public Solenoid climb1 = new Solenoid(RobotMap.eject1);
 	public Solenoid climb2 = new Solenoid(RobotMap.eject2);
 	public static float climberstop = 0.0f;
@@ -23,7 +25,7 @@ public class ClimberSubsystem extends Subsystem{
 	LinkedList<Double> CurrentQueue = new LinkedList<Double>();
 	@Override
 	protected void initDefaultCommand() {
-		climber.setControlMode(0);
+		climber.set(ControlMode.PercentOutput,0);
 		
 	}
 	
@@ -58,14 +60,14 @@ public class ClimberSubsystem extends Subsystem{
 	public void climb(boolean isClimbing, boolean climbstopbypass){
 		
 		if(isClimbing && !climbstopbypass){
-			climber.set(1.0);
+			climber.set(ControlMode.PercentOutput,1.0);
 		}else if(!climbstopbypass){
-			climber.set(0.0);
+			climber.set(ControlMode.PercentOutput,0.0);
 		}
 	}
 	public boolean reverseClimb(boolean isReversed){
 		if(isReversed){
-			climber.set(-1.0);
+			climber.set(ControlMode.PercentOutput,-1.0);
 			return true;
 		}
 			return false;

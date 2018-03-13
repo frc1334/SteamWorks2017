@@ -5,6 +5,8 @@ import org.usfirst.frc.team1334.robot.OI;
 import org.usfirst.frc.team1334.robot.Robot;
 import org.usfirst.frc.team1334.robot.subsystems.DriveSubsystem;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -25,10 +27,10 @@ public class DriveCommand extends Command {
 
     @Override
     protected void initialize() {
-		DriveSubsystem.left1.setControlMode(0);
-        DriveSubsystem.left2.setControlMode(0);
-        DriveSubsystem.right1.setControlMode(0);
-        DriveSubsystem.right2.setControlMode(0);
+		DriveSubsystem.left1.set(ControlMode.PercentOutput,0);
+        DriveSubsystem.left2.set(ControlMode.PercentOutput,0);
+        DriveSubsystem.right1.set(ControlMode.PercentOutput,0);
+        DriveSubsystem.right2.set(ControlMode.PercentOutput,0);
         Robot.driveSubsystem.ResetGyroAngle();
         Start = System.currentTimeMillis();
         
